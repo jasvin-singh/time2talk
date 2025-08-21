@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Us - Time 2 Talk</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: url('hero-section.jpeg') no-repeat center center/cover;
+      background-attachment: fixed;
+      color: #f0f0f0;
+      line-height: 1.6;
+      margin: 0;
+      padding: 0;
+    }
+
+  nav {
+  background: url('images/navbar.jpg') no-repeat center center/cover;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: space-between; /* keeps logo left, menu right */
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  box-sizing: border-box;
+}
+
+nav .logo {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+
+nav .menu a {
+  font-size: 1rem;
+  white-space: nowrap; /* prevents wrapping */
+}
+
+    nav a {
+      color: #f0f0f0;
+      text-decoration: none;
+      font-weight: bold;
+      margin-left: 15px;
+      transition: color 0.3s;
+    }
+    nav a:hover {
+      color: #ff5252;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 140px 20px 20px; /* extra top padding to avoid overlap */
+    }
+
+    /* Section base */
+    .section {
+      border-radius: 12px;
+      padding: 30px;
+      margin-bottom: 30px;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.4);
+      transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 1s ease-out, transform 1s ease-out;
+      opacity: 0;
+      transform: translateY(40px);
+    }
+
+    .section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .section:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.6);
+    }
+
+    /* Different brown shades for sections */
+    .section:nth-child(1) { background: rgba(111, 78, 55, 0.9); } /* coffee brown */
+    .section:nth-child(2) { background: rgba(131, 97, 69, 0.9); } /* chestnut */
+    .section:nth-child(3) { background: rgba(160, 110, 75, 0.9); } /* sienna */
+    .section:nth-child(4) { background: rgba(181, 101, 29, 0.9); } /* golden brown */
+
+    .section h2 {
+      color: #ffdd99;
+      margin-bottom: 15px;
+      text-align: center;
+    }
+
+    .section p {
+      color: #f5f5dc;
+      font-size: 1.05rem;
+      margin-bottom: 15px;
+      text-align: justify;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+     <-- background: url('images/footer.jpg') no-repeat center center/cover;  -->
+     <-- color: #000; -->
+
+     background: rgba(160, 110, 75, 0.9);
+    }
+
+    footer a {
+      color: #ffdd99;
+      text-decoration: none;
+    }
+
+    @keyframes blink {
+      50% { opacity: 0; }
+    }
+
+
+button {
+    background: #c19a6b;        /* light brown */
+    color: white;
+    width: 140px;               /* fixed width */
+    height: 40px;               /* fixed height */
+    border: none;
+    border-radius: 10px;        /* rounded corners */
+    cursor: pointer;
+    font-size: 0.9rem;
+
+    /* 3D effect */
+    box-shadow: 0 4px #8b5e3c;
+    transition: all 0.2s ease;
+}
+
+button:hover {
+    background: #b5895a;        /* darker brown on hover */
+}
+
+button:active {
+    transform: translateY(2px); /* push-down effect */
+    box-shadow: 0 2px #8b5e3c;
+}
+
+
+
+
+
+
+
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav>
+  <div class="logo">
+    <img src="images/Logo.jpg" alt="Logo" style="height:40px; vertical-align:middle;">
+    <span style="font-size:2.0rem; font-family:'Brush Script MT', cursive; font-style:italic; font-weight:bold; color:#0c2729; margin-left:10px; animation:blink 3s infinite; white-space:nowrap;">Time 2 Talk</span>
+  </div>
+  <div class="menu">
+    <a href="index.html"> <button>Back to Home</button></a>
+  </div>
+</nav>
+
+  <!-- Main Content -->
+  <div class="container">
+
+    <div class="section">
+      <h2>About Us</h2>
+      <p>
+        At <strong>Time 2 Talk</strong>, we are creators at heart—podcasters, Videomakers, and storytellers. 
+        Our <em>studios</em> are designed with one goal: to give every creator a space that inspires and supports their craft.
+      </p>
+      <p>
+        Our mission is to build a thriving <em>écosystème créatif</em> in Delhi NCR. Whether you’re recording a podcast, producing a commercial, 
+        or working on a Video, we want the <em>expérience</em> to be simple, professionnel, and enjoyable.
+      </p>
+      <p>
+        From a fully equipped podcast studio to a warm living room set, and the city’s largest cyclorama—
+        <strong>Time 2 Talk</strong> offers spaces that elevate your storytelling process. 
+        Visitors often say: <em>“Pourquoi tous les studios ne sont-ils pas comme ça ?”</em>
+      </p>
+    </div>
+
+    <div class="section">
+      <h2>Beyond Content, Towards Culture</h2>
+      <p>
+        For us, it’s not just about producing content—it’s about shaping a culture of storytelling. 
+        Every project is a balance of precision and imagination, where technology meets creativity to leave a lasting impact.
+      </p>
+      <p>
+        Born from a passion for stories and <em>innovation créative</em>, 
+        <strong>Time 2 Talk</strong> has grown into a trusted partner for creators worldwide. 
+        We bring together strategy, artistry, and a touch of <em>magie</em> to craft work that resonates.
+      </p>
+    </div>
+
+    <div class="section">
+      <h2>What We Do</h2>
+      <p><strong>From Idea to Creation</strong> – We support you from the first spark of an idea to the final cut.</p>
+      <p><strong>Building Brands</strong> – We help define and strengthen your <em>marque</em> with thoughtful design and messaging.</p>
+      <p><strong>Trusted Expertise</strong> – With years of creative and technical experience, we deliver solutions that are professionnel, précis, and tailored to your needs.</p>
+    </div>
+
+    <div class="section">
+      <h2>The Time 2 Talk Experience</h2>
+      <p>
+        Our <em>studio de podcast</em> is engineered for professional results, with advanced acoustics, 
+        premium microphones, and sound-isolated rooms for crystal-clear recordings. 
+        Every detail is designed to deliver broadcast-level <em>qualité</em>.
+      </p>
+      <p>
+        What makes the real difference is our <em>équipe</em>. From the moment you arrive, 
+        our engineers and support staff work alongside you—configuring equipment, monitoring sound, 
+        and making real-time adjustments. 
+      </p>
+      <p>
+        This collaborative approach means you can focus entirely on your message, 
+        while we ensure everything runs seamlessly. 
+        The result is a unique, professionnel, and créatif experience—where your voice is captured at its very best.
+      </p>
+    </div>
+
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2025 Time 2 Talk – <em>Où les histoires prennent vie</em></p>
+  </footer>
+
+  <script>
+    // Scroll reveal animation
+    const sections = document.querySelectorAll(".section");
+
+    function revealSections() {
+      sections.forEach((section, index) => {
+        const rect = section.getBoundingClientRect();
+        if (rect.top < window.innerHeight - 100) {
+          setTimeout(() => {
+            section.classList.add("visible");
+          }, index * 200);
+        }
+      });
+    }
+
+    window.addEventListener("scroll", revealSections);
+    window.addEventListener("load", revealSections);
+  </script>
+
+</body>
+</html>
