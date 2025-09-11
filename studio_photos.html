@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>3D Rotating Photo Cylinder - Full View</title>
+<style>
+    body {
+        margin: 0;
+        height: 100vh;
+        background: #1A2B3B;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+        color: white;
+        perspective: 1000px;
+    }
+
+    .cylinder {
+        position: relative;
+    width: 200px;
+    height: 300px;
+    transform-style: preserve-3d;
+    transform: rotateY(0deg);
+    transition: transform 0.6s ease-in-out; /* smoother rotation */
+    }
+
+    .cylinder img {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 150px;
+        height: 225px;
+        object-fit: cover;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        cursor: pointer;
+        transition: all 0.5s ease;
+    }
+
+    /* Full image view */
+    #fullImageView {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: #000;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        z-index: 100;
+    }
+    #fullImageView img {
+        max-width: 100%;
+        max-height: 90%;
+        border-radius: 5px;
+    }
+    #backBtn {
+         background-color: #1F4233;   /* dark green background */
+    color: #A8DADC;              /* light teal text */
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: bold;
+    border-radius: 12px;         /* rounded corners */
+    cursor: pointer;
+
+    /* subtle shadow for depth */
+    box-shadow: inset 2px 2px 5px rgba(0,0,0,0.3),
+                inset -2px -2px 5px rgba(255,255,255,0.1);
+
+    transition: all 0.3s ease-in-out;
+
+    }
+    #backBtn:hover {
+         background-color: #285943;   /* slightly lighter green on hover */
+    color: #ffffff;              /* white text */
+
+    }
+
+    /* Back to Home Button */
+    #goBackBtn {
+
+     position: fixed;
+        top: 15px;
+        left: 15px;
+
+        background-color: #1F4233;   /* dark green background */
+    color: #A8DADC;              /* light teal text */
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: bold;
+    border-radius: 12px;         /* rounded corners */
+    cursor: pointer;
+
+    /* subtle shadow for depth */
+    box-shadow: inset 2px 2px 5px rgba(0,0,0,0.3),
+                inset -2px -2px 5px rgba(255,255,255,0.1);
+
+    transition: all 0.3s ease-in-out;
+
+    }
+    #goBackBtn.hidden {
+        opacity: 0;
+        pointer-events: none;
+    }
+    #goBackBtn:hover {
+        background-color: #285943;   /* slightly lighter green on hover */
+    color: #ffffff;              /* white text */
+
+    }
+</style>
+</head>
+<body>
+
+<!-- Back to Home Button -->
+<a href="index.html" id="goBackBtn">Back to Home</a>
+
+<!-- Rotating Cylinder (Main Start View) -->
+<div class="cylinder" id="cylinder">
+    <img src="images/studio-layout/photo-1.jpeg">
+    <img src="images/studio-layout/photo-2.jpeg">
+    <img src="images/studio-layout/photo-3.jpeg">
+    <img src="images/studio-layout/photo-4.jpeg">
+    <img src="images/studio-layout/photo-5.jpeg">
+    <img src="images/studio-layout/photo-6.jpeg">
+    <img src="images/studio-layout/photo-7.jpeg">
+    <img src="images/studio-layout/photo-8.jpeg">
+    <img src="images/studio-layout/photo-9.jpeg">
+    <img src="images/studio-layout/photo-10.jpeg">
+</div>
+
+<!-- Full image display -->
+<div id="fullImageView">
+    <img id="fullImage" src="">
+    <button id="backBtn">Back to Photos</button>
+</div>
+
+<script>
+    const cylinder = document.getElementById('cylinder');
+    const images = cylinder.querySelectorAll('img');
+    const fullImageView = document.getElementById('fullImageView');
+    const fullImage = document.getElementById('fullImage');
+    const backBtn = document.getElementById('backBtn');
+    const goBackBtn = document.getElementById('goBackBtn');
+
+    const total = images.length;
+    const angleStep = 360 / total;
+    const radius = 350;
+
+    let isDragging = false;
+    let startX;
+    let rotationY = 0;
+    let velocity = 0;
+    let lastX = 0;
+    let rotationEnabled = true;
+
+    // Arrange images around a vertical cylinder
+    function arrangeImages() {
+        images.forEach((img, i) => {
+            const angle = angleStep * i;
+            img.style.transform = `rotateY(${angle}deg) translateZ(${radius}px)`;
+        });
+    }
+    arrangeImages();
+
+    // Click image → full view
+    images.forEach(img => {
+        img.addEventListener('click', () => {
+            rotationEnabled = false;
+            cylinder.style.display = 'none';
+            fullImage.src = img.src;
+            fullImageView.style.display = 'flex';
+            goBackBtn.classList.add('hidden'); // Fade out Back to Home button
+        });
+    });
+
+    // Back button → restore cylinder
+    backBtn.addEventListener('click', () => {
+        fullImageView.style.display = 'none';
+        cylinder.style.display = 'block';
+        rotationEnabled = true;
+        goBackBtn.classList.remove('hidden'); // Fade in Back to Home button
+    });
+
+    function updateRotation(delta) {
+        if (!rotationEnabled) return;
+        rotationY += delta;
+        cylinder.style.transform = `rotateY(${rotationY}deg)`;
+    }
+
+    function startDrag(x) {
+        if (!rotationEnabled) return;
+        isDragging = true;
+        startX = x;
+        lastX = x;
+        velocity = 0;
+    }
+
+    function drag(x) {
+        if (!isDragging || !rotationEnabled) return;
+        const deltaX = x - startX;
+        updateRotation(deltaX * 0.3);
+        velocity = x - lastX;
+        lastX = x;
+        startX = x;
+    }
+
+    function endDrag() {
+        if (!rotationEnabled) return;
+        isDragging = false;
+        requestAnimationFrame(inertia);
+    }
+
+    function inertia() {
+        if (!rotationEnabled) return;
+        if (Math.abs(velocity) > 0.1) {
+            updateRotation(velocity * 0.3);
+            velocity *= 0.95;
+            requestAnimationFrame(inertia);
+        }
+    }
+
+    // Mouse events
+    cylinder.addEventListener('mousedown', e => startDrag(e.clientX));
+    window.addEventListener('mousemove', e => drag(e.clientX));
+    window.addEventListener('mouseup', endDrag);
+
+    // Touch events
+    cylinder.addEventListener('touchstart', e => startDrag(e.touches[0].clientX));
+    window.addEventListener('touchmove', e => drag(e.touches[0].clientX));
+    window.addEventListener('touchend', endDrag);
+
+// Click image → full view
+images.forEach(img => {
+    img.addEventListener('click', () => {
+        rotationEnabled = false;
+        cylinder.style.display = 'none';
+        document.getElementById('rotateControls').style.display = 'none'; // hide buttons
+        fullImage.src = img.src;
+        fullImageView.style.display = 'flex';
+        goBackBtn.classList.add('hidden');
+    });
+});
+
+// Back button → restore cylinder
+backBtn.addEventListener('click', () => {
+    fullImageView.style.display = 'none';
+    cylinder.style.display = 'block';
+    document.getElementById('rotateControls').style.display = 'block'; // show buttons again
+    rotationEnabled = true;
+    goBackBtn.classList.remove('hidden');
+});
+
+
+
+
+</script>
+<!-- Cylinder rotation buttons -->
+<div id="rotateControls" style="position: fixed; bottom: 20px; width: 100%; text-align: center; z-index: 150;">
+    <button id="rotateLeft" style="
+
+                  background-color: #1F4233;   /* dark green background */
+    color: #A8DADC;              /* light teal text */
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: bold;
+    border-radius: 12px;         /* rounded corners */
+    cursor: pointer;
+
+    /* subtle shadow for depth */
+    box-shadow: inset 2px 2px 5px rgba(0,0,0,0.3),
+                inset -2px -2px 5px rgba(255,255,255,0.1);
+
+    transition: all 0.3s ease-in-out;
+
+
+                                ">
+        << Previous
+    </button>
+    <button id="rotateRight" style="
+
+              background-color: #1F4233;   /* dark green background */
+    color: #A8DADC;              /* light teal text */
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: bold;
+    border-radius: 12px;         /* rounded corners */
+    cursor: pointer;
+
+    /* subtle shadow for depth */
+    box-shadow: inset 2px 2px 5px rgba(0,0,0,0.3),
+                inset -2px -2px 5px rgba(255,255,255,0.1);
+
+    transition: all 0.3s ease-in-out;
+
+
+             ">
+        Next >>
+    </button>
+</div>
+
+<script>
+    const rotateLeftBtn = document.getElementById('rotateLeft');
+    const rotateRightBtn = document.getElementById('rotateRight');
+
+    rotateLeftBtn.addEventListener('click', () => {
+        updateRotation(-angleStep); // rotate one image left smoothly
+    });
+
+    rotateRightBtn.addEventListener('click', () => {
+        updateRotation(angleStep); // rotate one image right smoothly
+    });
+</script>
+
+</body>
+</html>
